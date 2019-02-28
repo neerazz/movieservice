@@ -1,6 +1,5 @@
 package com.neeraj.microservices.movies.springbatch.domain;
 
-import com.neeraj.microservices.movies.springbatch.batch.GZipBufferedReaderFactory;
 import com.neeraj.microservices.movies.springbatch.mapper.TitlePrincipalsMapper;
 import com.neeraj.microservices.movies.springbatch.model.TitlePrincipals;
 import com.neeraj.microservices.movies.springbatch.repository.TitlePrincipalsRepository;

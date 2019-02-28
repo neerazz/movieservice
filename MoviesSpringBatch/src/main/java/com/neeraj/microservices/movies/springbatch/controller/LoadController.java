@@ -1,5 +1,6 @@
 package com.neeraj.microservices.movies.springbatch.controller;
 
+import com.neeraj.microservices.movies.springbatch.service.JobCreatingService;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
@@ -7,6 +8,7 @@ import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteExcep
 import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,19 +23,28 @@ public class LoadController {
     private JobLauncher jobLauncher;
 
     @Autowired
-    private Job job;
+    private JobCreatingService jobCreatingService;
 
-    @GetMapping
+    @GetMapping("/allfiles")
     public BatchStatus load() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         Map<String, JobParameter> maps = new HashMap<>();
         maps.put("time", new JobParameter(System.currentTimeMillis()));
         JobParameters parameters = new JobParameters(maps);
-        JobExecution jobExecution = jobLauncher.run(job, parameters);
-
+        JobExecution jobExecution = jobLauncher.run(jobCreatingService.createJobWithAllSteps(), parameters);
         System.out.println("JobExecution: " + jobExecution.getStatus());
 
-        System.out.println("Batch is Running...");
+        return jobExecution.getStatus();
+    }
+
+    @GetMapping("/{number}")
+    public BatchStatus load(@PathVariable("number") int jobNumber) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
+
+        Map<String, JobParameter> maps = new HashMap<>();
+        maps.put("time", new JobParameter(System.currentTimeMillis()));
+        JobParameters parameters = new JobParameters(maps);
+        JobExecution jobExecution = jobLauncher.run(jobCreatingService.createJobWithOneStep(jobNumber), parameters);
+        System.out.println("JobExecution: " + jobExecution.getStatus());
 
         return jobExecution.getStatus();
     }

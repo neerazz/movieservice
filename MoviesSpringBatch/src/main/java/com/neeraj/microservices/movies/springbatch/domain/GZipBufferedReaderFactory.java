@@ -1,4 +1,4 @@
-package com.neeraj.microservices.movies.springbatch.batch;
+package com.neeraj.microservices.movies.springbatch.domain;
 
 import org.springframework.batch.item.file.BufferedReaderFactory;
 import org.springframework.core.io.Resource;

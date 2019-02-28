@@ -1,6 +1,5 @@
 package com.neeraj.microservices.movies.springbatch.domain;
 
-import com.neeraj.microservices.movies.springbatch.batch.GZipBufferedReaderFactory;
 import com.neeraj.microservices.movies.springbatch.mapper.TitleAkasMapper;
 import com.neeraj.microservices.movies.springbatch.model.TitleAkas;
 import com.neeraj.microservices.movies.springbatch.repository.TitleAkasRepository;
