@@ -16,7 +16,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.neeraj.microservices.movies.springbatch.config.SpringBatchConfig.FILE_PATH;
+import static com.neeraj.microservices.movies.springbatch.service.JobCreatingService.FILE_PATH;
 
 @Component
 public class TitleRatingFileType implements FileType {
@@ -53,6 +53,7 @@ public class TitleRatingFileType implements FileType {
         return new ItemProcessor<TitleRating, TitleRating>() {
             @Override
             public TitleRating process(TitleRating item) {
+                log.debug("Value during ItemProcesser is {}." , item.toString());
                 return item;
             }
         };
@@ -61,8 +62,12 @@ public class TitleRatingFileType implements FileType {
     @Override
     public ItemWriter<TitleRating> getItemWriter() {
         return (List<? extends TitleRating> objects) -> {
-            log.info("Storing {} {} objects to DB.", +objects.size(), objects.get(0).getClass().getName());
-            titleRatingRepository.saveAll(objects);
+            log.info("Storing {} {} objects to DB.", objects.size(), objects.get(0).getClass().getName());
+            try{
+                titleRatingRepository.saveAll(objects);
+            }catch (RuntimeException e){
+                log.error("{} Error While processing the Below Objects: \n{}", e.getMessage() , objects.toString());
+            }
         };
     }
 }

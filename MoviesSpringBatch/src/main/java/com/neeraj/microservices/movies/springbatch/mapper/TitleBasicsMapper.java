@@ -31,6 +31,7 @@ public class TitleBasicsMapper extends BasicConversion implements FieldSetMapper
         } catch (Exception e) {
             log.error("Error while mapping the fileset:{} to Object:{}.", Arrays.toString(fieldSet.getValues()), newObject);
         }
+        log.trace("Input \n{} is transformed to \n{}.",Arrays.toString(fieldSet.getValues()),newObject.toString());
         return newObject;
     }
 }

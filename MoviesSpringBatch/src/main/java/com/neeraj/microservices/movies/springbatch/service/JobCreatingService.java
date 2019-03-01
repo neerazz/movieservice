@@ -30,7 +30,7 @@ public class JobCreatingService {
     private JobBuilderFactory jobBuilderFactory;
 
     public Job createJobWithAllSteps() {
-        return jobBuilderFactory.get("File Loader")
+        return jobBuilderFactory.get("All File Loader")
                 .incrementer(new RunIdIncrementer())
                 .start(buildStep(filePathConfig.getTitleakas()))
                 .start(buildStep(filePathConfig.getTitleepisode()))
@@ -69,7 +69,7 @@ public class JobCreatingService {
                 step = buildStep(filePathConfig.getTitlecrew());
                 break;
         }
-        return jobBuilderFactory.get("File Loader")
+        return jobBuilderFactory.get("Individual File Loader")
                 .incrementer(new RunIdIncrementer())
                 .start(step)
                 .build();

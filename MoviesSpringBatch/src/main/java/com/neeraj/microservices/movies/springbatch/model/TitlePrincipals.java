@@ -1,7 +1,9 @@
 package com.neeraj.microservices.movies.springbatch.model;
 
+import com.neeraj.microservices.movies.springbatch.model.entitycompositesconstrain.TitlePrincipalsUniqueConstrain;
+
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 
 /*
     This class contains the principal cast/crew for titles
@@ -16,9 +18,8 @@ import javax.persistence.Id;
 @Entity
 public class TitlePrincipals {
 
-    @Id
-    private String tconst;
-    private int ordering;
+    @EmbeddedId
+    private TitlePrincipalsUniqueConstrain titlePrincipalsUniqueConstrain;
     private String nconst;
     private String category;
     private String job;
@@ -27,30 +28,49 @@ public class TitlePrincipals {
     public TitlePrincipals() {
     }
 
-    public TitlePrincipals(String tconst, int ordering, String nconst, String category, String job, String characters) {
-        this.tconst = tconst;
-        this.ordering = ordering;
+    public TitlePrincipals(TitlePrincipalsUniqueConstrain titlePrincipalsUniqueConstrain, String nconst, String category, String job, String characters) {
+        this.titlePrincipalsUniqueConstrain = titlePrincipalsUniqueConstrain;
         this.nconst = nconst;
         this.category = category;
         this.job = job;
         this.characters = characters;
     }
 
-    public String getTconst() {
-        return tconst;
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TitlePrincipals)) return false;
+
+        TitlePrincipals that = (TitlePrincipals) o;
+
+        if (!titlePrincipalsUniqueConstrain.equals(that.titlePrincipalsUniqueConstrain)) return false;
+        return getNconst().equals(that.getNconst());
     }
 
-    public TitlePrincipals setTconst(String tconst) {
-        this.tconst = tconst;
-        return this;
+    @Override
+    public int hashCode() {
+        int result = titlePrincipalsUniqueConstrain.hashCode();
+        result = 31 * result + getNconst().hashCode();
+        return result;
     }
 
-    public int getOrdering() {
-        return ordering;
+    @Override
+    public String toString() {
+        return "TitlePrincipals{" +
+                "titlePrincipalsUniqueConstrain=" + titlePrincipalsUniqueConstrain +
+                ", nconst='" + nconst + '\'' +
+                ", category='" + category + '\'' +
+                ", job='" + job + '\'' +
+                ", characters='" + characters + '\'' +
+                '}';
     }
 
-    public TitlePrincipals setOrdering(int ordering) {
-        this.ordering = ordering;
+    public TitlePrincipalsUniqueConstrain getTitlePrincipalsUniqueConstrain() {
+        return titlePrincipalsUniqueConstrain;
+    }
+
+    public TitlePrincipals setTitlePrincipalsUniqueConstrain(TitlePrincipalsUniqueConstrain titlePrincipalsUniqueConstrain) {
+        this.titlePrincipalsUniqueConstrain = titlePrincipalsUniqueConstrain;
         return this;
     }
 
@@ -88,17 +108,5 @@ public class TitlePrincipals {
     public TitlePrincipals setCharacters(String characters) {
         this.characters = characters;
         return this;
-    }
-
-    @Override
-    public String toString() {
-        return "TitlePrincipals{" +
-                "tconst='" + tconst + '\'' +
-                ", ordering=" + ordering +
-                ", nconst='" + nconst + '\'' +
-                ", category='" + category + '\'' +
-                ", job='" + job + '\'' +
-                ", characters='" + characters + '\'' +
-                '}';
     }
 }

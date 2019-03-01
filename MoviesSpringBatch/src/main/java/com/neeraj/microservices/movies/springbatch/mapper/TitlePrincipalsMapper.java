@@ -1,6 +1,7 @@
 package com.neeraj.microservices.movies.springbatch.mapper;
 
 import com.neeraj.microservices.movies.springbatch.model.TitlePrincipals;
+import com.neeraj.microservices.movies.springbatch.model.entitycompositesconstrain.TitlePrincipalsUniqueConstrain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
@@ -18,10 +19,12 @@ public class TitlePrincipalsMapper extends BasicConversion implements FieldSetMa
     public TitlePrincipals mapFieldSet(FieldSet fieldSet) {
 
         TitlePrincipals newObject = new TitlePrincipals();
-
+        TitlePrincipalsUniqueConstrain titlePrincipalsUniqueConstrain = new TitlePrincipalsUniqueConstrain();
         try {
-            newObject.setTconst(fieldSet.readString(1))
-                    .setOrdering(getIntegerValue(fieldSet.readString(1)))
+            titlePrincipalsUniqueConstrain.setTconst(fieldSet.readString(0))
+                    .setOrdering(getIntegerValue(fieldSet.readString(1)));
+
+            newObject.setTitlePrincipalsUniqueConstrain(titlePrincipalsUniqueConstrain)
                     .setNconst(fieldSet.readString(2))
                     .setCategory(fieldSet.readString(3))
                     .setJob(checkEmptyValue(fieldSet.readString(4)))
@@ -29,6 +32,7 @@ public class TitlePrincipalsMapper extends BasicConversion implements FieldSetMa
         } catch (Exception e) {
             log.error("Error while mapping the fileset:{} to Object:{}.", Arrays.toString(fieldSet.getValues()), newObject);
         }
+        log.trace("Input \n{} is transformed to \n{}.",Arrays.toString(fieldSet.getValues()),newObject.toString());
         return newObject;
     }
 }

@@ -1,6 +1,7 @@
 package com.neeraj.microservices.movies.springbatch.mapper;
 
 import com.neeraj.microservices.movies.springbatch.model.TitleAkas;
+import com.neeraj.microservices.movies.springbatch.model.entitycompositesconstrain.TitleAkasUniqueConstrain;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
@@ -19,9 +20,13 @@ public class TitleAkasMapper extends BasicConversion implements FieldSetMapper {
 
         TitleAkas newObject = new TitleAkas();
 
+        TitleAkasUniqueConstrain titleAkasUniqueConstrain = new TitleAkasUniqueConstrain();
+
         try {
-            newObject.setTitleId(fieldSet.readString(0))
-                    .setOrdering(getIntegerValue(fieldSet.readString(1)))
+            titleAkasUniqueConstrain.setTitleId(fieldSet.readString(0))
+                    .setOrdering(fieldSet.readString(1));
+
+            newObject.setAkasUniqueConstrain(titleAkasUniqueConstrain)
                     .setTitle(fieldSet.readString(2))
                     .setRegion(fieldSet.readString(3))
                     .setLanguage(fieldSet.readString(4))
@@ -31,6 +36,7 @@ public class TitleAkasMapper extends BasicConversion implements FieldSetMapper {
         } catch (Exception e) {
             log.error("Error while mapping the fileset:{} to Object:{}.", Arrays.toString(fieldSet.getValues()), newObject);
         }
+        log.trace("Input \n{} is transformed to \n{}.",Arrays.toString(fieldSet.getValues()),newObject.toString());
         return newObject;
     }
 }

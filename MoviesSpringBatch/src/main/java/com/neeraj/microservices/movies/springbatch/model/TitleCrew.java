@@ -2,9 +2,6 @@ package com.neeraj.microservices.movies.springbatch.model;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.OneToMany;
-import java.util.Set;
 
 /*
     This class contains the director and writer information for all the titles in IMDb. Fields include:
@@ -19,22 +16,13 @@ public class TitleCrew {
     @Id
     private String tconst;
 
-    @OneToMany
-    @JoinColumn(name = "nconsts")
-    private Set<NameBasics> directors;
+    private String directors;
 
-    @OneToMany
-    @JoinColumn(name = "nconsts")
-    private Set<NameBasics> writers;
+    private String writers;
 
     public TitleCrew() {
     }
 
-    public TitleCrew(String tconst, Set<NameBasics> directors, Set<NameBasics> writers) {
-        this.tconst = tconst;
-        this.directors = directors;
-        this.writers = writers;
-    }
 
     public String getTconst() {
         return tconst;
@@ -45,20 +33,41 @@ public class TitleCrew {
         return this;
     }
 
-    public Set<NameBasics> getDirectors() {
+    public TitleCrew(String tconst, String directors, String writers) {
+        this.tconst = tconst;
+        this.directors = directors;
+        this.writers = writers;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof TitleCrew)) return false;
+
+        TitleCrew titleCrew = (TitleCrew) o;
+
+        return getTconst().equals(titleCrew.getTconst());
+    }
+
+    @Override
+    public int hashCode() {
+        return getTconst().hashCode();
+    }
+
+    public String getDirectors() {
         return directors;
     }
 
-    public TitleCrew setDirectors(Set<NameBasics> directors) {
+    public TitleCrew setDirectors(String directors) {
         this.directors = directors;
         return this;
     }
 
-    public Set<NameBasics> getWriters() {
+    public String getWriters() {
         return writers;
     }
 
-    public TitleCrew setWriters(Set<NameBasics> writers) {
+    public TitleCrew setWriters(String writers) {
         this.writers = writers;
         return this;
     }
