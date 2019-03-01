@@ -1,5 +1,6 @@
 package com.neeraj.microservices.movies.springbatch.service;
 
+import com.neeraj.microservices.movies.springbatch.domain.FileSkipperPolicy;
 import com.neeraj.microservices.movies.springbatch.domain.FileType;
 import com.neeraj.microservices.movies.springbatch.domain.FileTypeFactory;
 import com.neeraj.microservices.movies.springbatch.model.FilePathConfig;
@@ -10,6 +11,7 @@ import org.springframework.batch.core.configuration.annotation.JobBuilderFactory
 import org.springframework.batch.core.configuration.annotation.StepBuilderFactory;
 import org.springframework.batch.core.launch.support.RunIdIncrementer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 @Service
@@ -28,6 +30,12 @@ public class JobCreatingService {
 
     @Autowired
     private JobBuilderFactory jobBuilderFactory;
+
+    @Autowired
+    private FileSkipperPolicy fileSkipperPolicy;
+
+    @Value("${spring.batch.chunk}")
+    private Integer chunkValue;
 
     public Job createJobWithAllSteps() {
         return jobBuilderFactory.get("All File Loader")
@@ -78,10 +86,10 @@ public class JobCreatingService {
     private Step buildStep(String fileName) {
         FileType fileType = fileTypeFactory.getFileType(fileName);
         return stepBuilderFactory.get(fileName + " File-loader")
-                .<TitleRating, TitleRating>chunk(20000)
+                .<TitleRating, TitleRating>chunk(chunkValue)
                 .reader(fileType.getItemReader(fileName))
                 .processor(fileType.getItemProcesser())
-                .writer(fileType.getItemWriter())
+                .writer(fileType.getItemWriter()).faultTolerant().skipPolicy(fileSkipperPolicy)
                 .build();
     }
 }

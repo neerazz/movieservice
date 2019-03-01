@@ -61,7 +61,7 @@ public class TitleBasicsFileType implements FileType {
     @Override
     public ItemWriter<TitleBasics> getItemWriter() {
         return (List<? extends TitleBasics> objects) -> {
-            log.info("Storing {} {} objects to DB.", objects.size(), objects.get(0).getClass().getName());
+            log.info("Starting writing {} {} objects to DB.", objects.size(), objects.get(0).getClass().getName());
 
             try{
                 titleBasicsRepository.saveAll(objects);

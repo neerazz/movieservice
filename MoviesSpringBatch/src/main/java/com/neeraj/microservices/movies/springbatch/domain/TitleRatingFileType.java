@@ -62,7 +62,9 @@ public class TitleRatingFileType implements FileType {
     @Override
     public ItemWriter<TitleRating> getItemWriter() {
         return (List<? extends TitleRating> objects) -> {
-            log.info("Storing {} {} objects to DB.", objects.size(), objects.get(0).getClass().getName());
+
+            log.info("Starting writing {} {} objects to DB.", objects.size(), objects.get(0).getClass().getName());
+
             try{
                 titleRatingRepository.saveAll(objects);
             }catch (RuntimeException e){

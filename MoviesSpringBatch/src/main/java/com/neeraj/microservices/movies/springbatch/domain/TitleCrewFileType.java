@@ -61,11 +61,12 @@ public class TitleCrewFileType implements FileType {
     @Override
     public ItemWriter<TitleCrew> getItemWriter() {
         return (List<? extends TitleCrew> objects) -> {
-            log.info("Storing {} {} objects to DB.", objects.size(), objects.get(0).getClass().getName());
+
+            log.info("Starting writing {} {} objects to DB.", objects.size(), objects.get(0).getClass().getName());
 
             try{
                 titleCrewRepository.saveAll(objects);
-            }catch (RuntimeException e){
+            } catch (Exception e) {
                 log.error("{} Error While processing the Below Objects: \n{}", e.getMessage() , objects.toString());
             }
         };

@@ -61,7 +61,9 @@ public class TitlePrincipalsFileType implements FileType {
     @Override
     public ItemWriter<TitlePrincipals> getItemWriter() {
         return (List<? extends TitlePrincipals> objects) -> {
-            log.info("Storing {} {} objects to DB.", objects.size(), objects.get(0).getClass().getName());
+
+            log.info("Starting writing {} {} objects to DB.", objects.size(), objects.get(0).getClass().getName());
+
             try{
                 titlePrincipalsRepository.saveAll(objects);
             }catch (RuntimeException e){
