@@ -1,6 +1,7 @@
 package com.neeraj.microservices.movies.springbatch.controller;
 
 import com.neeraj.microservices.movies.springbatch.service.JobCreatingService;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.batch.core.*;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
@@ -26,6 +27,7 @@ public class LoadController {
     private JobCreatingService jobCreatingService;
 
     @GetMapping("/allfiles")
+    @ApiOperation(value = "NA", notes = "This end point Loads all the files into the table.")
     public BatchStatus load() throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         Map<String, JobParameter> maps = new HashMap<>();
@@ -33,11 +35,12 @@ public class LoadController {
         JobParameters parameters = new JobParameters(maps);
         JobExecution jobExecution = jobLauncher.run(jobCreatingService.createJobWithAllSteps(), parameters);
         System.out.println("JobExecution: " + jobExecution.getStatus());
-
         return jobExecution.getStatus();
     }
 
     @GetMapping("/{number}")
+    @ApiOperation(value = "Load A batch job, based on File ID.",
+            notes = "This end point Loads all the files into the table.")
     public BatchStatus load(@PathVariable("number") int jobNumber) throws JobParametersInvalidException, JobExecutionAlreadyRunningException, JobRestartException, JobInstanceAlreadyCompleteException {
 
         Map<String, JobParameter> maps = new HashMap<>();

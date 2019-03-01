@@ -16,7 +16,20 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <contact.name>Neeraj Kumar Singh</contact.name>
+        <contact.email>b.neerajkumarsingh@gmail.com</contact.email>
     </properties>
+
+    <ciManagement>
+        <notifiers>
+            <notifier>
+                <type>mail</type>
+                <configuration>
+                    <address>${contact.email}</address>
+                </configuration>
+            </notifier>
+        </notifiers>
+    </ciManagement>
 
     <dependencies>
         <dependency>
@@ -46,6 +59,18 @@
         </dependency>
 
         <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger2</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>io.springfox</groupId>
+            <artifactId>springfox-swagger-ui</artifactId>
+            <version>2.4.0</version>
+        </dependency>
+
+        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
@@ -58,7 +83,21 @@
     </dependencies>
 
     <build>
+        <resources>
+            <resource>
+                <filtering>true</filtering>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>application.properties</include>
+                </includes>
+            </resource>
+        </resources>
         <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-resources-plugin</artifactId>
+                <version>3.0.1</version>
+            </plugin>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
