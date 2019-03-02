@@ -1,6 +1,7 @@
 package com.neeraj.microservice.movies.movieservice.mapper;
 
 import com.neeraj.microservice.movies.movieservice.model.TitleAkas;
+import com.neeraj.microservice.movies.movieservice.model.entitycompositesconstrain.TitleAkasUniqueConstrain;
 import com.neeraj.microservice.movies.movieservice.repository.TitleAkasRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,9 +21,12 @@ public class TitleAkasMapper implements StringToClassMapper {
     public Object convertToObject(String[] input) {
         log.trace(Arrays.toString(input));
 
+        TitleAkasUniqueConstrain titleAkasUniqueConstrain = new TitleAkasUniqueConstrain();
+        titleAkasUniqueConstrain.setTitleId(input[0])
+                .setOrdering(input[1]);
+
         TitleAkas titleAkas = new TitleAkas()
-                .setTitleId(input[0])
-                .setOrdering(getIntegerValue(input[1]))
+                .setAkasUniqueConstrain(titleAkasUniqueConstrain)
                 .setTitle(input[2])
                 .setRegion(input[3])
                 .setLanguage(input[4])

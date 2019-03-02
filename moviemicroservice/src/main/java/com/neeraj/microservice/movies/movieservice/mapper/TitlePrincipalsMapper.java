@@ -1,6 +1,7 @@
 package com.neeraj.microservice.movies.movieservice.mapper;
 
 import com.neeraj.microservice.movies.movieservice.model.TitlePrincipals;
+import com.neeraj.microservice.movies.movieservice.model.entitycompositesconstrain.TitlePrincipalsUniqueConstrain;
 import com.neeraj.microservice.movies.movieservice.repository.TitlePrincipalsRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -19,9 +20,13 @@ public class TitlePrincipalsMapper implements StringToClassMapper {
     @Override
     public Object convertToObject(String[] inputArray) {
         log.debug(Arrays.toString(inputArray));
-        TitlePrincipals titlePrincipals = new TitlePrincipals()
+
+        TitlePrincipalsUniqueConstrain titlePrincipalsUniqueConstrain = new TitlePrincipalsUniqueConstrain()
                 .setTconst(inputArray[0])
-                .setOrdering(getIntegerValue(inputArray[1]))
+                .setOrdering(getIntegerValue(inputArray[1]));
+
+        TitlePrincipals titlePrincipals = new TitlePrincipals()
+                .setTitlePrincipalsUniqueConstrain(titlePrincipalsUniqueConstrain)
                 .setNconst(inputArray[2])
                 .setCategory(inputArray[3])
                 .setJob(checkEmptyValue(inputArray[4]))

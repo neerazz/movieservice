@@ -1,7 +1,11 @@
 package com.neeraj.microservice.movies.movieservice.model;
 
+import com.neeraj.microservice.movies.movieservice.model.entitycompositesconstrain.TitleAkasUniqueConstrain;
+
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 
 /*
         This class contains the following information for titles:
@@ -17,11 +21,11 @@ import javax.persistence.Id;
  */
 
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"titleId", "ordering"}))
 public class TitleAkas {
 
-    @Id
-    private String titleId;
-    private int ordering;
+    @EmbeddedId
+    private TitleAkasUniqueConstrain akasUniqueConstrain;
     private String title;
     private String region;
     private String language;
@@ -32,9 +36,8 @@ public class TitleAkas {
     public TitleAkas() {
     }
 
-    public TitleAkas(String titleId, int ordering, String title, String region, String language, String types, String attributes, boolean isOriginalTitle) {
-        this.titleId = titleId;
-        this.ordering = ordering;
+    public TitleAkas(TitleAkasUniqueConstrain akasUniqueConstrain, String title, String region, String language, String types, String attributes, boolean isOriginalTitle) {
+        this.akasUniqueConstrain = akasUniqueConstrain;
         this.title = title;
         this.region = region;
         this.language = language;
@@ -46,8 +49,7 @@ public class TitleAkas {
     @Override
     public String toString() {
         return "TitleAkas{" +
-                "titleId='" + titleId + '\'' +
-                ", ordering=" + ordering +
+                "akasUniqueConstrain=" + akasUniqueConstrain +
                 ", title='" + title + '\'' +
                 ", region='" + region + '\'' +
                 ", language='" + language + '\'' +
@@ -57,21 +59,12 @@ public class TitleAkas {
                 '}';
     }
 
-    public String getTitleId() {
-        return titleId;
+    public TitleAkasUniqueConstrain getAkasUniqueConstrain() {
+        return akasUniqueConstrain;
     }
 
-    public TitleAkas setTitleId(String titleId) {
-        this.titleId = titleId;
-        return this;
-    }
-
-    public int getOrdering() {
-        return ordering;
-    }
-
-    public TitleAkas setOrdering(int ordering) {
-        this.ordering = ordering;
+    public TitleAkas setAkasUniqueConstrain(TitleAkasUniqueConstrain akasUniqueConstrain) {
+        this.akasUniqueConstrain = akasUniqueConstrain;
         return this;
     }
 
