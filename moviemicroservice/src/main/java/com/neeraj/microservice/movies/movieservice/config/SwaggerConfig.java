@@ -38,7 +38,7 @@ public class SwaggerConfig {
         this.projectVersion = projectVersion;
         this.projectContactName = projectContactName;
         this.projectContactEmail = projectContactEmail;
-        DEFAULT_PRODUCES_AND_CONSUMES = new HashSet<String>(Arrays.asList("application/json", "application/xml"));
+        DEFAULT_PRODUCES_AND_CONSUMES = new HashSet<String>(Arrays.asList("application/json"));
     }
 
     @Bean

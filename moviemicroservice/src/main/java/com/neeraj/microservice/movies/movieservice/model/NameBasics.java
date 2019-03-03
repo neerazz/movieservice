@@ -1,7 +1,8 @@
 package com.neeraj.microservice.movies.movieservice.model;
 
-import javax.persistence.*;
-import java.util.List;
+import javax.persistence.Entity;
+import javax.persistence.Id;
+import javax.persistence.Table;
 
 /*
 
@@ -24,20 +25,40 @@ public class NameBasics {
     private int birthYear;
     private int deathYear;
     private String primaryProfession;
-    @OneToMany
-    @JoinColumn(name = "tconst")
-    private List<TitleBasics> knownForTitles;
+    private String knownForTitles;
 
     public NameBasics() {
     }
 
-    public NameBasics(String nconst, String primaryName, int birthYear, int deathYear, String primaryProfession, List<TitleBasics> knownForTitles) {
+    public NameBasics(String nconst, String primaryName, int birthYear, int deathYear, String primaryProfession, String knownForTitles) {
         this.nconst = nconst;
         this.primaryName = primaryName;
         this.birthYear = birthYear;
         this.deathYear = deathYear;
         this.primaryProfession = primaryProfession;
         this.knownForTitles = knownForTitles;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof NameBasics)) return false;
+
+        NameBasics that = (NameBasics) o;
+
+        if (getBirthYear() != that.getBirthYear()) return false;
+        if (getDeathYear() != that.getDeathYear()) return false;
+        if (!getNconst().equals(that.getNconst())) return false;
+        return getPrimaryName().equals(that.getPrimaryName());
+    }
+
+    @Override
+    public int hashCode() {
+        int result = getNconst().hashCode();
+        result = 31 * result + getPrimaryName().hashCode();
+        result = 31 * result + getBirthYear();
+        result = 31 * result + getDeathYear();
+        return result;
     }
 
     public String getNconst() {
@@ -85,11 +106,11 @@ public class NameBasics {
         return this;
     }
 
-    public List<TitleBasics> getKnownForTitles() {
+    public String getKnownForTitles() {
         return knownForTitles;
     }
 
-    public NameBasics setKnownForTitles(List<TitleBasics> knownForTitles) {
+    public NameBasics setKnownForTitles(String knownForTitles) {
         this.knownForTitles = knownForTitles;
         return this;
     }

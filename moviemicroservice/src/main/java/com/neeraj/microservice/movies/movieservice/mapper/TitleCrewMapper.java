@@ -35,8 +35,8 @@ public class TitleCrewMapper implements StringToClassMapper {
         log.debug(Arrays.toString(input));
         TitleCrew titleCrew = new TitleCrew()
                 .setTconst(input[0])
-                .setDirectors(directors)
-                .setWriters(writers);
+                .setDirectors(checkEmptyValue(input[1]))
+                .setWriters(checkEmptyValue(input[2]));
 
         log.debug(titleCrew.toString());
         return titleCrew;

@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@Api()
+@Api
 public class FileProcessingController {
 
     private final Logger log = LoggerFactory.getLogger(this.getClass());
