@@ -16,6 +16,7 @@
 
     <properties>
         <java.version>1.8</java.version>
+        <app.ip>1001</app.ip>
         <contact.name>Neeraj Kumar Singh</contact.name>
         <contact.email>b.neerajkumarsingh@gmail.com</contact.email>
     </properties>
@@ -133,6 +134,80 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
             </plugin>
+
+            <!--Adding a plugin to install an image on local docker version.-->
+            <plugin>
+                <groupId>io.fabric8</groupId>
+                <artifactId>docker-maven-plugin</artifactId>
+                <version>0.27.2</version>
+                <configuration>
+                    <!-- Commenting out the docker host configuration as teh docker is running in local. -->
+                    <!--<dockerHost>tcp://REMOTE_IP:2375</dockerHost> -->
+                    <!--<dockerHost>tcp://127.0.0.0:8</dockerHost>-->
+                    <verbose>true</verbose>
+
+                    <images>
+                        <image>
+                            <name>${project.name}:${project.version}</name>
+                            <build>
+
+                                <!-- This is the same FROM used in a Dockerfile -->
+                                <from>openjdk:8</from>
+
+                                <maintainer>${contact.email}</maintainer>
+                                <tags>
+                                    <tag>latest</tag>
+                                    <tag>${project.version}</tag>
+                                </tags>
+                                <ports>
+                                    <port>${app.ip}</port>
+                                </ports>
+
+                                <!-- This is the same ENTRYPOINT used in a Dockerfile -->
+                                <entryPoint>
+                                    <exec>
+                                        <arg>java</arg>
+                                        <!-- This extra argument is so Tomcat can start faster due to lack of entropy -->
+                                        <!--<arg>-Djava.security.egd=file:/dev/./urandom</arg>-->
+                                        <arg>-jar</arg>
+                                        <!-- /maven/ is the default dir that the plugin copies your artifact to -->
+                                        <arg>/maven/${project.build.finalName}.jar</arg>
+                                    </exec>
+                                </entryPoint>
+
+                                <!-- This is a predefined assembly.xml that will only copy your final artifact to the Docker image -->
+                                <assembly>
+                                    <descriptorRef>artifact</descriptorRef>
+                                </assembly>
+                            </build>
+                            <run>
+
+                                <links>
+                                    <link>movies-mysql</link>
+                                </links>
+
+                                <ports>
+                                    <port>${app.ip}:${app.ip}</port>
+                                </ports>
+
+                            </run>
+                        </image>
+                    </images>
+                </configuration>
+
+                <executions>
+                    <execution>
+                        <id>start</id>
+                        <phase>pre-integration-test</phase>
+                        <goals>
+                            <!--<goal>stop</goal>-->
+                            <goal>build</goal>
+                            <goal>start</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
         </plugins>
     </build>
 
