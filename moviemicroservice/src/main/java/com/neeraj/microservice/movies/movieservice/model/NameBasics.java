@@ -1,5 +1,6 @@
 package com.neeraj.microservice.movies.movieservice.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -22,7 +23,9 @@ public class NameBasics {
     @Id
     private String nconst;
     private String primaryName;
+    @Column(length = 4)
     private int birthYear;
+    @Column(length = 4)
     private int deathYear;
     private String primaryProfession;
     private String knownForTitles;

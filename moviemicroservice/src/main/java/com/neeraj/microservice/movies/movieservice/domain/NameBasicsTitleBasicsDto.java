@@ -4,7 +4,7 @@ import com.neeraj.microservice.movies.movieservice.model.TitleBasics;
 
 import java.util.Set;
 
-public class NameBasicsResponse {
+public class NameBasicsTitleBasicsDto {
     private String nconst;
     private String primaryName;
     private int birthYear;
@@ -12,10 +12,10 @@ public class NameBasicsResponse {
     private String primaryProfession;
     private Set<TitleBasics> knownForTitles;
 
-    public NameBasicsResponse() {
+    public NameBasicsTitleBasicsDto() {
     }
 
-    public NameBasicsResponse(String nconst, String primaryName, int birthYear, int deathYear, String primaryProfession, Set<TitleBasics> knownForTitles) {
+    public NameBasicsTitleBasicsDto(String nconst, String primaryName, int birthYear, int deathYear, String primaryProfession, Set<TitleBasics> knownForTitles) {
         this.nconst = nconst;
         this.primaryName = primaryName;
         this.birthYear = birthYear;
@@ -27,9 +27,9 @@ public class NameBasicsResponse {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof NameBasicsResponse)) return false;
+        if (!(o instanceof NameBasicsTitleBasicsDto)) return false;
 
-        NameBasicsResponse that = (NameBasicsResponse) o;
+        NameBasicsTitleBasicsDto that = (NameBasicsTitleBasicsDto) o;
 
         if (getBirthYear() != that.getBirthYear()) return false;
         if (getDeathYear() != that.getDeathYear()) return false;
@@ -50,7 +50,7 @@ public class NameBasicsResponse {
         return nconst;
     }
 
-    public NameBasicsResponse setNconst(String nconst) {
+    public NameBasicsTitleBasicsDto setNconst(String nconst) {
         this.nconst = nconst;
         return this;
     }
@@ -59,7 +59,7 @@ public class NameBasicsResponse {
         return primaryName;
     }
 
-    public NameBasicsResponse setPrimaryName(String primaryName) {
+    public NameBasicsTitleBasicsDto setPrimaryName(String primaryName) {
         this.primaryName = primaryName;
         return this;
     }
@@ -68,7 +68,7 @@ public class NameBasicsResponse {
         return birthYear;
     }
 
-    public NameBasicsResponse setBirthYear(int birthYear) {
+    public NameBasicsTitleBasicsDto setBirthYear(int birthYear) {
         this.birthYear = birthYear;
         return this;
     }
@@ -77,7 +77,7 @@ public class NameBasicsResponse {
         return deathYear;
     }
 
-    public NameBasicsResponse setDeathYear(int deathYear) {
+    public NameBasicsTitleBasicsDto setDeathYear(int deathYear) {
         this.deathYear = deathYear;
         return this;
     }
@@ -86,7 +86,7 @@ public class NameBasicsResponse {
         return primaryProfession;
     }
 
-    public NameBasicsResponse setPrimaryProfession(String primaryProfession) {
+    public NameBasicsTitleBasicsDto setPrimaryProfession(String primaryProfession) {
         this.primaryProfession = primaryProfession;
         return this;
     }
@@ -95,7 +95,7 @@ public class NameBasicsResponse {
         return knownForTitles;
     }
 
-    public NameBasicsResponse setKnownForTitles(Set<TitleBasics> knownForTitles) {
+    public NameBasicsTitleBasicsDto setKnownForTitles(Set<TitleBasics> knownForTitles) {
         this.knownForTitles = knownForTitles;
         return this;
     }

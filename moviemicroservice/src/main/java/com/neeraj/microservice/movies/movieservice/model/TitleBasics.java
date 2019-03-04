@@ -15,6 +15,7 @@ package com.neeraj.microservice.movies.movieservice.model;
 
  */
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -27,7 +28,9 @@ public class TitleBasics {
     private String primaryTitle;
     private String originalTitle;
     private boolean isAdult;
+    @Column(length = 4)
     private int startYear;
+    @Column(length = 4)
     private int endYear;
     private int runtimeMinutes;
     private String genres;
