@@ -28,3 +28,4 @@ HELP.md
 ## Ignore Log Files
 /logs/*
 *.log
+*.gz

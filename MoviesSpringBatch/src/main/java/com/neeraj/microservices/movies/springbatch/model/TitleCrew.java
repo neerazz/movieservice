@@ -1,5 +1,6 @@
 package com.neeraj.microservices.movies.springbatch.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.Id;
 
@@ -16,8 +17,10 @@ public class TitleCrew {
     @Id
     private String tconst;
 
+    @Column(length = 3000)
     private String directors;
 
+    @Column(length = 3500)
     private String writers;
 
     public TitleCrew() {
