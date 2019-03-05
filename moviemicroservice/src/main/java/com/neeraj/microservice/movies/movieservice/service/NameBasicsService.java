@@ -7,7 +7,6 @@ import com.neeraj.microservice.movies.movieservice.model.TitleBasics;
 import com.neeraj.microservice.movies.movieservice.repository.NameBasicsRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -29,7 +28,7 @@ public class NameBasicsService {
     @Autowired
     private PagingService pagingService;
 
-    public Page<NameBasics> searchArtistByName(String searchString, Integer maxResults, Integer pageNumber) {
+    public List<NameBasics> searchArtistByName(String searchString, Integer maxResults, Integer pageNumber) {
         Pageable pageable = pagingService.getPageable(maxResults, pageNumber);
         return nameBasicsRepository.findByPrimaryNameIgnoreCaseContaining(searchString, pageable);
     }
@@ -46,9 +45,8 @@ public class NameBasicsService {
 
     public List<NameBasicsTitleBasicsDto> searchArtistByNameWithTitles(String searchString, Integer maxResults, Integer pageNumber) {
 
-        Page<NameBasics> nameBasics = searchArtistByName(searchString, maxResults, pageNumber);
-        return nameBasics.get()
-                .parallel()
+        List<NameBasics> nameBasics = searchArtistByName(searchString, maxResults, pageNumber);
+        return nameBasics.parallelStream()
                 .map(nameBasic -> getNameBasicsWithIndividuallyTitles(nameBasic))
                 .collect(Collectors.toList());
 

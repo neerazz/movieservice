@@ -7,7 +7,6 @@ import com.neeraj.microservice.movies.movieservice.service.NameBasicsService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -32,7 +31,7 @@ public class NameController {
 
     @GetMapping(SEARCH_ARTIST_BY_NAME)
     @ApiOperation(value = "This accepts a string and return and return list of Artists.' ")
-    public Page<NameBasics> searchArtistByName(
+    public List<NameBasics> searchArtistByName(
             @RequestParam("searchString") String searchString,
             @RequestParam("size") Integer maxResults,
             @RequestParam("page") Integer pageNumber) {
