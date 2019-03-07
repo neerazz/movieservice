@@ -11,13 +11,14 @@
     <groupId>com.neeraj.microservice.movies.movieservice</groupId>
     <artifactId>graphql</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>graphql</name>
+    <name>MoviesGraphQL</name>
     <description>Spring Boot Project for Movies services using GraphQL</description>
 
     <properties>
         <java.version>1.8</java.version>
         <app.ip>1003</app.ip>
         <graphql.version>5.0.2</graphql.version>
+        <graphql.tool.version>5.2.4</graphql.tool.version>
         <contact.name>Neeraj Kumar Singh</contact.name>
         <contact.email>b.neerajkumarsingh@gmail.com</contact.email>
     </properties>
@@ -61,7 +62,7 @@
         <dependency>
             <groupId>com.graphql-java</groupId>
             <artifactId>graphql-java-tools</artifactId>
-            <version>5.2.4</version>
+            <version>${graphql.tool.version}</version>
         </dependency>
         <dependency>
             <groupId>com.graphql-java</groupId>
@@ -70,15 +71,15 @@
         </dependency>
 
         <dependency>
-            <groupId>org.modelmapper</groupId>
-            <artifactId>modelmapper</artifactId>
-            <version>2.3.0</version>
-        </dependency>
-
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.modelmapper</groupId>
+            <artifactId>modelmapper</artifactId>
+            <version>2.3.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 

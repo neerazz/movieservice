@@ -1,0 +1,70 @@
+schema {
+    query: Query
+    #    mutation: Mutation
+}
+
+type Query {
+    artists(name:String!, maxResults: Int!, pageNumber:Int!) : [NameBasics]!
+}
+
+#type Mutation {
+#
+#}
+
+type NameBasics{
+    nconst : String!
+    primaryName : String!
+    birthYear : Int!
+    deathYear : Int
+    primaryProfession : String
+    knownForTitles :String!
+}
+
+type TitleBasics{
+    tconst : String!
+    titleType : String!
+    primaryTitle : String!
+    originalTitle : String!
+    isAdult : String!
+    startYear : String!
+    endYear : String
+    runtimeMinutes : String!
+    genres : String!
+}
+
+type TitleCrew{
+    tconst : String!
+    directors : String!
+    writers : String!
+}
+
+type TitlePrincipal{
+    tconst : String!
+    ordering : String!
+    nconst : String!
+    category : Sring!
+    job : String
+    characters : String
+}
+
+type TitleBasicsNameTitlePrincipal{
+    tconst : String!
+    titleType : String!
+    primaryTitle : String!
+    originalTitle : String!
+    isAdult : String!
+    startYear : String!
+    endYear : String
+    runtimeMinutes : String!
+    genres : String!
+    artists : [NameBasics]
+    principals : [TitlePrincipal]
+}
+
+type NameBasicsTitleBasics{
+    nconst : String!
+    name : String!
+    birthyear : Int!
+    deathyear : Int
+    knownForTitles :[TitleBasics]!
+}
