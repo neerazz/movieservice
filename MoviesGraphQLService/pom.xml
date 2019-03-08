@@ -11,7 +11,7 @@
     <groupId>com.neeraj.microservice.movies.movieservice</groupId>
     <artifactId>graphql</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>MoviesGraphQL</name>
+    <name>moviesgraphql</name>
     <description>Spring Boot Project for Movies services using GraphQL</description>
 
     <properties>

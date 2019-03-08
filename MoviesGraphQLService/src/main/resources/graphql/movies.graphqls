@@ -4,7 +4,15 @@ schema {
 }
 
 type Query {
+    artist(id:String!) : NameBasics
+    artistandtitles(id:String!) : NameBasicsTitleBasics
     artists(name:String!, maxResults: Int!, pageNumber:Int!) : [NameBasics]!
+    artistsandtitles(name:String!, maxResults: Int!, pageNumber:Int!) : [NameBasicsTitleBasics]
+
+    title(id:String!) : TitleBasics
+    titles(name:String!, maxResults: Int!, pageNumber:Int!) : [TitleBasics]!
+    titleandartistsandprinciples(id:String!) : TitleBasicsNameTitlePrincipal
+    titlesandartistsandprinciples(name:String!, maxResults: Int!, pageNumber:Int!) : [TitleBasicsNameTitlePrincipal]
 }
 
 #type Mutation {
@@ -39,12 +47,16 @@ type TitleCrew{
 }
 
 type TitlePrincipal{
-    tconst : String!
-    ordering : String!
+    titlePrincipalsUniqueConstrain : TitlePrincipalsUniqueConstrain!
     nconst : String!
-    category : Sring!
+    category : String!
     job : String
     characters : String
+}
+
+type TitlePrincipalsUniqueConstrain{
+    tconst : String!
+    ordering : String!
 }
 
 type TitleBasicsNameTitlePrincipal{
@@ -57,14 +69,15 @@ type TitleBasicsNameTitlePrincipal{
     endYear : String
     runtimeMinutes : String!
     genres : String!
-    artists : [NameBasics]
     principals : [TitlePrincipal]
+    artists : [NameBasics]
 }
 
 type NameBasicsTitleBasics{
     nconst : String!
-    name : String!
-    birthyear : Int!
-    deathyear : Int
+    primaryName : String!
+    birthYear : Int!
+    deathYear : Int
+    primaryProfession : String
     knownForTitles :[TitleBasics]!
 }
