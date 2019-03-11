@@ -1,11 +1,10 @@
 package com.neeraj.microservice.movies.movieservice.graphql.service;
 
 import com.neeraj.microservice.movies.movieservice.graphql.exceptions.NoSuchObjectFoundException;
-import com.neeraj.microservice.movies.movieservice.graphql.model.domain.TitleBasicsNameDto;
-import com.neeraj.microservice.movies.movieservice.graphql.model.domain.TitleBasicsNamePrincipleDto;
-import com.neeraj.microservice.movies.movieservice.graphql.model.domain.TitleBasicsPrinciplesDto;
+import com.neeraj.microservice.movies.movieservice.graphql.model.domain.*;
 import com.neeraj.microservice.movies.movieservice.graphql.model.entity.NameBasics;
 import com.neeraj.microservice.movies.movieservice.graphql.model.entity.TitleBasics;
+import com.neeraj.microservice.movies.movieservice.graphql.model.entity.TitleCrew;
 import com.neeraj.microservice.movies.movieservice.graphql.model.entity.TitlePrincipals;
 import com.neeraj.microservice.movies.movieservice.graphql.repository.TitleBasicsRepository;
 import com.neeraj.microservice.movies.movieservice.graphql.repository.TitlePrincipalsRepository;
@@ -15,6 +14,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,6 +28,9 @@ public class TitleBasicsService {
     private NameBasicsService nameBasicsService;
     private PagingService pagingService;
     private ModelMapper modelMapper;
+
+    @Autowired
+    private TitleCrewService titleCrewService;
 
     @Autowired
     public TitleBasicsService(TitleBasicsRepository titleBasicsRepository, TitlePrincipalsRepository titlePrincipalsRepository, NameBasicsService nameBasicsService, PagingService pagingService) {
@@ -74,11 +77,15 @@ public class TitleBasicsService {
                 .parallelStream()
                 .map(p -> nameBasicsService.searchArtistById(p.getNconst()))
                 .filter(optional -> optional.isPresent())
-//        .filter(
-//            optional -> {
-//              System.out.println(optional);
-//              return optional.isPresent();
-//            })
+                .map(nameBasics -> nameBasics.get())
+                .collect(Collectors.toList());
+    }
+
+    private List<NameBasics> getListOfCorrespondingNameBasics(String[] nameBasicIds) {
+        return Arrays.asList(nameBasicIds)
+                .parallelStream()
+                .map(id -> nameBasicsService.searchArtistById(id))
+                .filter(optional -> optional.isPresent())
                 .map(nameBasics -> nameBasics.get())
                 .collect(Collectors.toList());
     }
@@ -121,4 +128,40 @@ public class TitleBasicsService {
                 .map(titleBasics -> searchTitleBasicByIdWithNameWithPrinciples(titleBasics.getTconst()))
                 .collect(Collectors.toList());
     }
+
+    public List<TitleBasicCrewDto> searchTitleBasicsByNameWithCrew(String name, Integer maxResults, Integer pageNumber) {
+
+        return searchTitleBasicsByName(name, maxResults, pageNumber)
+                .get()
+                .parallel()
+                .map(titleBasics ->
+                        new TitleBasicCrewDto().toBuilder()
+                                .titleBasics(titleBasics)
+                                .titleCrew(titleCrewService.searchTitleCrewById(titleBasics.getTconst()).get())
+                                .build()
+                )
+                .collect(Collectors.toList());
+    }
+
+    public List<TitleBasicCrewNameBasicDto> searchTitleBasicsByNameWithCrewWithName(String name, Integer maxResults, Integer pageNumber) {
+
+        List<TitleBasics> titleBasics = searchTitleBasicsByName(name, maxResults, pageNumber).getContent();
+
+        return titleBasics.parallelStream()
+                .map(titleBasic -> {
+                    TitleCrew titleCrew = titleCrewService.searchTitleCrewById(titleBasic.getTconst()).get();
+                    String[] directorsString = titleCrew.getDirectors().split(",");
+                    List<NameBasics> directorsList = getListOfCorrespondingNameBasics(directorsString);
+                    String[] writers = titleCrew.getWriters().split(",");
+                    List<NameBasics> writersList = getListOfCorrespondingNameBasics(writers);
+                    return new TitleBasicCrewNameBasicDto()
+                            .toBuilder()
+                            .titleBasics(titleBasic)
+                            .directors(directorsList)
+                            .writers(writersList)
+                            .build();
+                })
+                .collect(Collectors.toList());
+    }
+
 }

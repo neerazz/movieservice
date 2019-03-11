@@ -1,10 +1,14 @@
 package com.neeraj.microservice.movies.movieservice.graphql.resolver;
 
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
+import com.neeraj.microservice.movies.movieservice.graphql.exceptions.NoSuchObjectFoundException;
 import com.neeraj.microservice.movies.movieservice.graphql.model.domain.NameBasicsTitleBasicsDto;
+import com.neeraj.microservice.movies.movieservice.graphql.model.domain.TitleBasicCrewDto;
+import com.neeraj.microservice.movies.movieservice.graphql.model.domain.TitleBasicCrewNameBasicDto;
 import com.neeraj.microservice.movies.movieservice.graphql.model.domain.TitleBasicsNamePrincipleDto;
 import com.neeraj.microservice.movies.movieservice.graphql.model.entity.NameBasics;
 import com.neeraj.microservice.movies.movieservice.graphql.model.entity.TitleBasics;
+import com.neeraj.microservice.movies.movieservice.graphql.model.entity.TitleCrew;
 import com.neeraj.microservice.movies.movieservice.graphql.service.NameBasicsService;
 import com.neeraj.microservice.movies.movieservice.graphql.service.TitleBasicsService;
 import com.neeraj.microservice.movies.movieservice.graphql.service.TitleCrewService;
@@ -56,5 +60,17 @@ public class QueryResolver implements GraphQLQueryResolver {
 
     public List<TitleBasicsNamePrincipleDto> getTitlesandartistsandprinciples(String name, Integer maxResults, Integer pageNumber) {
         return titleBasicsService.searchTitleBasicsByIdWithNameWithPrinciples(name, maxResults, pageNumber);
+    }
+
+    public List<TitleBasicCrewDto> getTitleswithcrew(String name, Integer maxResults, Integer pageNumber) {
+        return titleBasicsService.searchTitleBasicsByNameWithCrew(name, maxResults, pageNumber);
+    }
+
+    public List<TitleBasicCrewNameBasicDto> getTitleswithcrewandartists(String name, Integer maxResults, Integer pageNumber) {
+        return titleBasicsService.searchTitleBasicsByNameWithCrewWithName(name, maxResults, pageNumber);
+    }
+
+    public TitleCrew getCrew(String titleID) {
+        return titleCrewService.searchTitleCrewById(titleID).orElseThrow(() -> new NoSuchObjectFoundException("THere is no any title crew found by the  ID:" + titleID));
     }
 }

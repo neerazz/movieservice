@@ -13,6 +13,10 @@ type Query {
     titles(name:String!, maxResults: Int!, pageNumber:Int!) : [TitleBasics]!
     titleandartistsandprinciples(id:String!) : TitleBasicsNameTitlePrincipal
     titlesandartistsandprinciples(name:String!, maxResults: Int!, pageNumber:Int!) : [TitleBasicsNameTitlePrincipal]
+    titleswithcrew(name:String!, maxResults: Int!, pageNumber:Int!): [TitleBasicCrew]!
+    titleswithcrewandartists(name:String!, maxResults: Int!, pageNumber:Int!): [TitleBasicCrewNameBasic]!
+
+    crew(id: String!) : TitleCrew
 }
 
 #type Mutation {
@@ -57,6 +61,17 @@ type TitlePrincipal{
 type TitlePrincipalsUniqueConstrain{
     tconst : String!
     ordering : String!
+}
+
+type TitleBasicCrew{
+    titleBasics : TitleBasics
+    titleCrew : TitleCrew
+}
+
+type TitleBasicCrewNameBasic{
+    titleBasics : TitleBasics
+    directors : [NameBasics]
+    writers : [NameBasics]
 }
 
 type TitleBasicsNameTitlePrincipal{
