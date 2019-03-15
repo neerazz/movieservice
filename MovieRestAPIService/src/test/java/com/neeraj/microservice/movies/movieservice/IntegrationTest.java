@@ -1,6 +1,7 @@
 package com.neeraj.microservice.movies.movieservice;
 
 import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neeraj.microservice.movies.movieservice.domain.NameBasicsTitleBasicsDto;
 import com.neeraj.microservice.movies.movieservice.model.NameBasics;
@@ -58,8 +59,8 @@ public class IntegrationTest {
 //                get(SEARCH_ARTIST_BY_NAME, searchString)
                 get(SEARCH_ARTIST_BY_NAME)
                         .param("searchString", searchString)
-                        .param("maxResults", maxResults)
-                        .param("pageNumber", pageNumber)
+                        .param("size", maxResults)
+                        .param("page", pageNumber)
                         .accept(MediaType.APPLICATION_JSON_UTF8)
         ).andDo(print())
                 .andExpect(status().isOk())
@@ -69,6 +70,7 @@ public class IntegrationTest {
         String contentAsString = mvcResult.getResponse().getContentAsString();
         List<NameBasics> response = objectMapper.readValue(contentAsString, new TypeReference<List<NameBasics>>() {
         });
+//        List<NameBasics> response = objectMapper.readValue(contentAsString, NameBasicsList.class).getNameBasics();
 
 //        Assert to validate the response size.
         assertThat(response.size()).isLessThanOrEqualTo(Integer.parseInt(maxResults));
@@ -98,6 +100,7 @@ public class IntegrationTest {
                 .andReturn();
 
         String contentAsString = mvcResult.getResponse().getContentAsString();
+        objectMapper.configure(DeserializationFeature.ACCEPT_SINGLE_VALUE_AS_ARRAY, true);
         List<NameBasicsTitleBasicsDto> response = objectMapper.readValue(contentAsString, new TypeReference<List<NameBasicsTitleBasicsDto>>() {
         });
 

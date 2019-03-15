@@ -35,7 +35,6 @@ public class NameControllerTest {
 
     private String maxResults = "10";
     private String pageNumber = "1";
-    private String controllerMapping = "/artist-name";
 
     @MockBean
     private NameBasicsService nameBasicsService;
@@ -48,7 +47,7 @@ public class NameControllerTest {
                 .willReturn(java.util.Optional.ofNullable(aTestObject));
 
         mockMVC
-                .perform(get(controllerMapping + SEARCH_ARTIST_BY_ARTISTID, aTestObject.getNconst()))
+                .perform(get(SEARCH_ARTIST_BY_ARTISTID, aTestObject.getNconst()))
                 .andDo(print())
                 .andExpect(status().isOk());
     }
@@ -56,7 +55,7 @@ public class NameControllerTest {
     @Test(expected = IllegalArgumentException.class)
     public void searchArtistById_test_sad_path() throws Exception {
         mockMVC
-                .perform(get(controllerMapping + SEARCH_ARTIST_BY_ARTISTID))
+                .perform(get(SEARCH_ARTIST_BY_ARTISTID))
                 .andExpect(status().isBadRequest());
     }
 
@@ -68,7 +67,7 @@ public class NameControllerTest {
 
         mockMVC
                 .perform(
-                        get(controllerMapping + SEARCH_ARTIST_BY_NAME)
+                        get(SEARCH_ARTIST_BY_NAME)
                                 .param("searchString", nameBasics.getPrimaryName())
                                 .param("size", maxResults)
                                 .param("page", pageNumber)
@@ -88,7 +87,7 @@ public class NameControllerTest {
 
         mockMVC
                 .perform(
-                        get(controllerMapping + SEARCH_ARTIST_BY_NAME)
+                        get(SEARCH_ARTIST_BY_NAME)
                                 .param("size", maxResults)
                                 .param("page", pageNumber)
                                 .accept(MediaType.APPLICATION_JSON_UTF8))
@@ -103,7 +102,7 @@ public class NameControllerTest {
 
         mockMVC
                 .perform(
-                        get(controllerMapping + SEARCH_ARTIST_BY_NAME)
+                        get(SEARCH_ARTIST_BY_NAME)
                                 .param("searchString", nameBasics.getPrimaryName())
                                 .param("size", " 10 ")
                                 .param("page", pageNumber)
@@ -120,7 +119,7 @@ public class NameControllerTest {
         mockMVC
                 .perform(
                         get(
-                                controllerMapping + SEARCH_ARTIST_BY_ARTISTID_WITHTITLES,
+                                SEARCH_ARTIST_BY_ARTISTID_WITHTITLES,
                                 nameBasicTitleBasic.getNconst()))
                 .andDo(print())
                 .andExpect(status().isOk())
@@ -132,7 +131,7 @@ public class NameControllerTest {
     @Test
     public void searchByArtistIdWithTitles_sad_path() throws Exception {
         mockMVC
-                .perform(get(controllerMapping + SEARCH_ARTIST_BY_ARTISTID_WITHTITLES, ""))
+                .perform(get(SEARCH_ARTIST_BY_ARTISTID_WITHTITLES, ""))
                 .andDo(print())
                 .andExpect(status().isBadRequest());
     }

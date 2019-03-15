@@ -5,17 +5,17 @@ import com.neeraj.microservice.movies.movieservice.domain.TitleBasicsPrinciplesD
 import com.neeraj.microservice.movies.movieservice.exceptions.NoSuchObjectFoundException;
 import com.neeraj.microservice.movies.movieservice.model.TitleBasics;
 import com.neeraj.microservice.movies.movieservice.service.TitleBasicsService;
-import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.RestController;
 
 import static com.neeraj.microservice.movies.movieservice.constants.APIConstants.*;
 
 @RestController
-@Api(value = "/title-name")
-@RequestMapping("/title-name")
 public class TitleBasicsController {
 
     @Autowired
