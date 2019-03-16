@@ -19,7 +19,6 @@ import java.util.stream.Collectors;
 @Service
 public class NameBasicsService {
 
-    @Autowired
     private NameBasicsRepository nameBasicsRepository;
 
     @Autowired
@@ -27,6 +26,10 @@ public class NameBasicsService {
 
     @Autowired
     private PagingService pagingService;
+
+    public NameBasicsService(NameBasicsRepository nameBasicsRepository) {
+        this.nameBasicsRepository = nameBasicsRepository;
+    }
 
     public List<NameBasics> searchArtistByName(String searchString, Integer maxResults, Integer pageNumber) {
         Pageable pageable = pagingService.getPageable(maxResults, pageNumber);

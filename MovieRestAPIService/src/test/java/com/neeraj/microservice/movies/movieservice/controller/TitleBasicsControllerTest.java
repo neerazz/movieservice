@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.neeraj.microservice.movies.movieservice.domain.TitleBasicsNameDto;
 import com.neeraj.microservice.movies.movieservice.domain.TitleBasicsPrinciplesDto;
+import com.neeraj.microservice.movies.movieservice.exceptions.NoSuchObjectFoundException;
 import com.neeraj.microservice.movies.movieservice.model.TitleBasics;
 import com.neeraj.microservice.movies.movieservice.service.TitleBasicsService;
 import org.junit.Before;
@@ -78,6 +79,26 @@ public class TitleBasicsControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().string(getJsonString(pagedTitleBasicsList)));
+
+        //    This step verifies weather the mocking is done or not.
+        verify(titleBasicsService).searchTitleBasicsByName(anyString(), anyInt(), anyInt());
+    }
+
+    @Test
+    public void getTitleByName_test_happypath_exceptionTest() throws Exception {
+        Page<TitleBasics> pagedTitleBasicsList = createPagedTitleBasicsList();
+        when(titleBasicsService.searchTitleBasicsByName(anyString(), anyInt(), anyInt()))
+                .thenThrow(new NoSuchObjectFoundException("No such Object Found."));
+
+        mockMvc
+                .perform(
+                        get(SEARCH_TITLEBASICS_BY_NAME)
+                                .param("searchString", createTitleBasic().getOriginalTitle())
+                                .param("size", maxResults)
+                                .param("page", pageNumber)
+                                .accept(MediaType.APPLICATION_JSON_UTF8))
+                .andDo(print())
+                .andExpect(status().isNotFound());
 
         //    This step verifies weather the mocking is done or not.
         verify(titleBasicsService).searchTitleBasicsByName(anyString(), anyInt(), anyInt());
